@@ -14,8 +14,6 @@ import './dnd.css';
 import './indexstyle.css';
 import { MiniMap, Background } from 'reactflow';
 import './Theme.css';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import TextUpdaterNode from './TextUpdaterNode.js';
 import './text-updater-node.css';
 import TextUpdaterTwo from './TextUpdaterTwo';
@@ -25,6 +23,8 @@ import {BiLogOut} from 'react-icons/bi';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import {Link} from 'react-router-dom'
+import DownloadButton from '../MappingFlow/DownloadButton';
+import { useMemo } from 'react';
 
 
 
@@ -32,7 +32,6 @@ const initialNodes = [
   {
     id: '1',
     type: 'textUpdater',
-    data: { label: 'input node' },
     position: { x: 250, y: 5 },
   },
 ];
@@ -67,7 +66,6 @@ const DnDFlow = () => {
     [setEdges]
   );
   
-  // const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
  // AVATAR
  function stringToColor(string) {
@@ -126,7 +124,13 @@ function stringAvatar(name) {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node` },
+        // HERE IS THE PROBLEM
+        data: { label: `${type}` },
+        style: {backgroundColor:
+          '#00FFAB',
+          width: 200,
+          
+        }
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -134,13 +138,14 @@ function stringAvatar(name) {
     [reactFlowInstance]
   );
 
-  
-  const nodeTypes = { textUpdater: TextUpdaterNode, textUpdateTwo: TextUpdaterTwo};
+
+  const nodeTypes = useMemo(()=>({ textUpdater: TextUpdaterNode, textUpdateTwo: TextUpdaterTwo}), []);
 
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <div className="reactflow-wrapper" ref={reactFlowWrapper} style={{width: '100%', height: '100vh'}}>
+        <div className="reactflow-wrapper" id="dnd" ref={reactFlowWrapper} style={{width: '100%', height: '100vh'}}>
+          <DownloadButton/> 
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -155,12 +160,18 @@ function stringAvatar(name) {
           >
           <MiniMap 
                 nodeColor={n=>{
-                    if(n.type === 'input') return 'red';
+                    if(n.type === 'input') return '#00FFAB'
                     
-                    return 'blue'
+                    else if(n.type === 'textUpdater')
+
+                    return '#FF7777'
+                    
+                    else
+                    
+                    return '#31E1F7'
                       }} style={minimapStyle} zoomable pannable />
 
-         <Background variant="dots" gap={12} size={1} color="#888"/>
+         <Background variant="dots" gap={30} size={1} color="black  "/>
           
         <Controls />
         
@@ -184,8 +195,8 @@ function stringAvatar(name) {
         <div className='dragndrop_exitlogo'>
           <Tooltip title="Go To Dashboard"> 
             <Link exact to = "/Dashboard"> 
-            <IconButton color="primary" href="#contained-buttons" className='button_logout' style={{backgroundColor: "#E46D5F", color: "black", width:40, height:43, borderRadius:4}}>
-              <BiLogOut style={{width:45, height:30, color: 'black'}} />
+            <IconButton color="primary" href="#contained-buttons" className='button_logout' style={{backgroundColor: "#58549E", width:40, height:43, borderRadius:4}}>
+              <BiLogOut style={{width:45, height:30, color: 'white'}} />
             </IconButton>
            </Link>
           </Tooltip>

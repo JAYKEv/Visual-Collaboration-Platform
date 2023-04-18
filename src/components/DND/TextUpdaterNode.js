@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { Handle, Position } from 'reactflow';
+import { TextField } from '@mui/material';
 
 
 const handleStyle = { left: 10 };
@@ -12,13 +13,12 @@ function TextUpdaterNode({ data, isConnectable }) {
   
   return (
     <div className="text-updater-node">
-      <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
-      <Handle type="target" position={Position.Top} isConnectable={isConnectable} style={handleStyle}/>
-     <div>
-         <input id="text" name="text" onChange={onChange} className="nodrag" />
+      <Handle type="target, source" position={Position.Left} isConnectable={isConnectable} />
+    <div>
+         <TextField id="outlined-basic" label="Enter Text" variant="outlined" size='small'  className="nodrag" onChange={onChange}
+                      name="title" />
       </div>
-      <Handle type="target" position={Position.Right} id="b" isConnectable={isConnectable}/>
-      <Handle type="source" position={Position.Bottom} id="c" isConnectable={isConnectable} style={handleStyle} />
+        <Handle type="source, target"  position={Position.Right} id="b" isConnectable={isConnectable}/>
     </div>
   );
 }
